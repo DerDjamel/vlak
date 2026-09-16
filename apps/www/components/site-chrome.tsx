@@ -7,7 +7,7 @@ import { Button, ToggleGroup } from "@noorddev/vlak-react";
 import { chrome } from "@/app/site.stylex";
 import { sx } from "@/lib/sx";
 import { SettingsMark } from "./settings-mark";
-import { VlakMark } from "./vlak-mark";
+import { VlakMorphMark } from "./vlak-morph-mark";
 import { GlobalSearch } from "./global-search";
 
 type Scheme = "light" | "dark" | "auto";
@@ -338,7 +338,7 @@ export function SiteChrome() {
     <>
       <header {...sx("logo-wrap", chrome.logoWrap)}>
         <Link prefetch={false} href="/" {...sx("site-logo", chrome.logo)} aria-label="Vlak">
-          <VlakMark />
+          <VlakMorphMark />
         </Link>
         <span className="mobile-site-name" data-visible={atTop && pathname === "/"} aria-hidden="true">
           Vlak.dev
