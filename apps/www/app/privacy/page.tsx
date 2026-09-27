@@ -11,7 +11,7 @@ export const metadata: Metadata = pageMetadata("/privacy", {
 
 export default function PrivacyPage() {
   return (
-    <DocsShell title="Privacy" summary="How Vlak handles website and MCP request data. Last updated 9 September 2026.">
+    <DocsShell title="Privacy" summary="How Vlak handles website and MCP request data. Last updated 27 September 2026.">
       <h2 className="section-label">Who operates Vlak</h2>
       <p className="rs-t-body">
         Noord.dev publishes Vlak and operates vlak.dev and its public MCP endpoint. Questions or privacy requests can be sent to{" "}
@@ -26,6 +26,14 @@ export default function PrivacyPage() {
         Vlak runs on Vercel. Like most hosting providers, Vercel receives technical request information such as IP address, request time, host and path, response status, browser or client details, and approximate location derived from IP. Vlak uses this information only to deliver the service, diagnose failures, measure reliability, and prevent abuse.
       </p>
 
+      <h2 className="section-label">Hosted MCP usage</h2>
+      <p className="rs-t-body">
+        When usage measurement is enabled, the hosted MCP endpoint sends a small operational record to Noord&apos;s private analytics service: the published tool name, request completion time, success or error status, response duration, a random event identifier used to prevent duplicate counting, and whether optional OpenAI client metadata was present. That presence is an unverified hint, not proof of a particular client or an installed plugin.
+      </p>
+      <p className="rs-t-body">
+        These records contain no tool arguments, search text, prompts, results, raw client metadata, IP addresses, user identifiers, or conversation identifiers. They are used for aggregate usage and reliability reporting, not user profiles or confirmed installation counts. Reports cover the most recent 30 days. Older operational records are removed when the service next receives a measurement or generates a report.
+      </p>
+
       <h2 className="section-label">Website analytics</h2>
       <p className="rs-t-body">
         The website uses Vercel Web Analytics. It records aggregate page views and a small set of fixed events such as an installation-command copy or documentation link click. Vlak removes query strings and fragments, rejects unknown paths and event fields, and never sends copied text, form values, or clipboard contents. Vercel Web Analytics does not use third-party cookies; its visitor hash resets after 24 hours and is not used to follow a person across sites.
@@ -36,12 +44,12 @@ export default function PrivacyPage() {
 
       <h2 className="section-label">Sharing and retention</h2>
       <p className="rs-t-body">
-        Vlak does not sell personal data. Technical request and analytics data is processed by Vercel as the hosting and analytics provider. Vlak does not use an advertising network or share MCP request content with other services. Runtime logs are available to Vlak for no more than 30 days, depending on the hosting plan, and are then removed from the accessible log store. The daily analytics visitor hash expires after 24 hours. Aggregate analytics may remain available for the reporting period configured by Vercel.
+        Vlak does not sell personal data. Technical request and website analytics data is processed by Vercel as the hosting and analytics provider. Hosted MCP operational records are stored in Noord&apos;s private analytics database and are available only through its authenticated dashboard. Vlak does not use an advertising network or share MCP request content with other services. Runtime logs are available to Vlak for no more than 30 days, depending on the hosting plan, and are then removed from the accessible log store. The daily website analytics visitor hash expires after 24 hours. Aggregate website analytics may remain available for the reporting period configured by Vercel.
       </p>
 
       <h2 className="section-label">Your choices</h2>
       <p className="rs-t-body">
-        You can use the open-source packages and local stdio MCP server without calling vlak.dev. You can block the website analytics script, clear local storage in your browser, or stop using the hosted endpoint. To ask what data may relate to a request, or to request deletion where applicable, email{" "}
+        You can use the open-source packages and local stdio MCP server without calling vlak.dev; they do not send these usage measurements. Hosted MCP requests carrying DNT: 1 or Sec-GPC: 1 are excluded from this usage collection. Whether those headers can be set depends on your client. You can block the website analytics script, clear local storage in your browser, or stop using the hosted endpoint. To ask what data may relate to a request, or to request deletion where applicable, email{" "}
         <a className="rs-link" href="mailto:hello@noord.vc">hello@noord.vc</a>. Include the approximate request time and endpoint, but do not send secrets or full prompt content.
       </p>
 

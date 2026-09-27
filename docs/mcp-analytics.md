@@ -1,0 +1,67 @@
+# Hosted MCP usage in Godmode
+
+The hosted, tool-only MCP server can send operational measurements to Noord's
+authenticated Godmode dashboard at `/godmode/analytics/vlak`. No OpenAI API key
+is needed. This does not query an OpenAI install-count API.
+
+## Meaning of the metrics
+
+- A tool call is one observed response to a known `tools/call` request, including
+  validation and application errors. Discovery, initialization, resources,
+  unsupported tool names and notifications are not counted.
+- `get_install` counts requests for instructions, not executed package installs.
+- `openai_hint` means nonempty `openai/userAgent`, `openai/session` or
+  `openai/subject` metadata was present. The value is discarded. This can be
+  spoofed, absent, or shared across host surfaces. It is not verified ChatGPT traffic.
+- Durations measure handling until the JSON response is handed to the transport,
+  not network delivery or end-to-end model latency. They are rounded to
+  milliseconds and capped at the 30-second route limit.
+- Requests retried by the client are separate calls. Delivery retries of the
+  same metric can be deduplicated by its random event ID at the collector.
+- No user/session IDs, arguments, prompts, search terms, outputs, IPs, raw headers,
+  or error messages are included. No unique-user or retention metric is inferred.
+- Counts begin after activation. Missing historical data is not backfilled.
+  Delivery is best-effort; a collector timeout can undercount activity.
+
+The hosted API owns the reporter. Local stdio and unconfigured or preview
+deployments emit nothing. The published tool names, schemas, results and
+annotations are unchanged. Runtime error logs omit error objects that could
+contain request content.
+
+## Enable after deployment
+
+1. Deploy Noord's collector and dashboard, and apply its dedicated MCP metrics
+   migration using the instructions in Noord's `docs/vlak-mcp-metrics.md`.
+2. Configure the same random, at least 32-character `VLAK_MCP_METRICS_TOKEN` in
+   the server-side environment of both projects. Never use a `NEXT_PUBLIC_` name.
+3. Deploy Vlak with the updated `/privacy/` page and reporter. Collection stays
+   off unless `VLAK_MCP_METRICS_ENABLED=true` and `VERCEL_ENV=production`.
+4. Verify both deployments before turning that production flag on. The fixed
+   destination is `https://noord.dev/api/analytics/vlak-mcp`. Redirects are rejected
+   so a bearer credential cannot be forwarded to another origin.
+5. Make one intentional, labelled operational smoke check and confirm it reaches
+   Godmode. It is a test call, not a real user or install. Do not backfill fixtures.
+
+Delivery has a one-second timeout, is awaited after sending the MCP response,
+and cannot change the tool result. DNT: 1 and Sec-GPC: 1 opt out when the client
+sends them. Reports use a rolling 30-day window; expired events are purged on the
+next collector write or report read. No cleanup job is provisioned automatically.
+
+## Verify locally
+
+`pnpm --filter @noorddev/vlak-mcp typecheck`
+
+`pnpm --filter @noorddev/vlak-mcp test`
+
+Tests use an actual local Streamable HTTP MCP client and mocked outbound
+delivery. They do not call the production collector or affect production counts.
+
+## Sources
+
+- [OpenAI client metadata reference](https://developers.openai.com/plugins/reference#_meta-fields-the-client-provides)
+- [OpenAI plugin privacy requirements](https://developers.openai.com/plugins/app-guidelines#privacy)
+
+On 27 September 2026, the signed-in Vlak published-plugin portal did not expose
+an analytics view or install totals. No official plugin installation-count API
+was identified in the documentation checked. Godmode must show this as
+unavailable, not zero. Revisit if OpenAI exposes an official reporting source.

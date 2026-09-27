@@ -1,20 +1,21 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { createServer } from "./server.js";
+import { observeToolCalls, type McpMetricObserver } from "./telemetry.js";
 
 export type McpHttpRequest = IncomingMessage & { body?: unknown };
 
 function setPublicHeaders(response: ServerResponse) {
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, Mcp-Session-Id, Last-Event-ID");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, Mcp-Session-Id, Last-Event-ID, DNT, Sec-GPC");
   response.setHeader("Access-Control-Expose-Headers", "Mcp-Session-Id");
   response.setHeader("Cache-Control", "no-store");
   response.setHeader("X-Content-Type-Options", "nosniff");
 }
 
 /** Handle one stateless Streamable HTTP MCP request. Safe for serverless runtimes. */
-export async function handleMcpRequest(request: McpHttpRequest, response: ServerResponse): Promise<void> {
+export async function handleMcpRequest(request: McpHttpRequest, response: ServerResponse, observe?: McpMetricObserver): Promise<void> {
   setPublicHeaders(response);
 
   if (request.method === "OPTIONS") {
@@ -39,9 +40,10 @@ export async function handleMcpRequest(request: McpHttpRequest, response: Server
 
   try {
     await server.connect(transport);
+    if (observe) observeToolCalls(transport, observe);
     await transport.handleRequest(request, response, request.body);
-  } catch (error) {
-    console.error("Vlak MCP request failed", error);
+  } catch {
+    console.error("Vlak MCP request failed");
     if (!response.headersSent) {
       response.statusCode = 500;
       response.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -52,6 +54,6 @@ export async function handleMcpRequest(request: McpHttpRequest, response: Server
       }));
     }
   } finally {
-    await server.close().catch((error) => console.error("Vlak MCP cleanup failed", error));
+    await server.close().catch(() => console.error("Vlak MCP cleanup failed"));
   }
 }
