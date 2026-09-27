@@ -42,8 +42,10 @@ contain request content.
 5. Make one intentional, labelled operational smoke check and confirm it reaches
    Godmode. It is a test call, not a real user or install. Do not backfill fixtures.
 
-Delivery has a one-second timeout, is awaited after sending the MCP response,
-and cannot change the tool result. DNT: 1 and Sec-GPC: 1 opt out when the client
+Delivery has a one-second timeout. The complete request-and-delivery promise is
+registered with Vercel's `waitUntil` before processing the request, so analytics
+can finish after the HTTP response ends. Delivery cannot change the tool result.
+DNT: 1 and Sec-GPC: 1 opt out when the client
 sends them. Reports use a rolling 30-day window; expired events are purged on the
 next collector write or report read. No cleanup job is provisioned automatically.
 

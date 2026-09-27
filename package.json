@@ -32,6 +32,9 @@
     "smoke": "node scripts/smoke-tarball.mjs",
     "dev": "pnpm --filter www dev"
   },
+  "dependencies": {
+    "@vercel/functions": "3.9.9"
+  },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18",
     "@biomejs/biome": "^2.5.12",
