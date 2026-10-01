@@ -7,3 +7,5 @@
 .projectBody .byline { font-size: .8125rem; }
 .projectActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
 .projectBody .visit { display: inline-flex; gap: 8px; min-height: 44px; text-decoration: none; }
+.badgeLink { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.badgeLink img { display: block; }

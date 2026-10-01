@@ -11,9 +11,10 @@ export const metadata: Metadata = pageMetadata("/showcase", {
   robots: { index: false, follow: false },
 });
 
-const badge = `[![Built with Vlak](https://vlak.dev/badges/built-with-vlak.svg?v=2)](https://vlak.dev)`;
+const badge = `[![Built with Vlak](https://vlak.dev/badges/built-with-vlak.svg?v=3)](https://vlak.dev)`;
 const submitUrl = "https://github.com/Noord-Ventures/vlak/issues/new?template=showcase.yml";
 const projects = [
+  { name: "Staatskaart", url: "https://staatskaart.nl/", domain: "staatskaart.nl", image: "/showcase/staatskaart-20261001.jpg", description: "An interactive map of Dutch government, connecting its people, institutions, and decisions.", author: "Noord Labs" },
   { name: "Tax Scratchpad", url: "https://taxscratchpad.npux.design/", domain: "taxscratchpad.npux.design", image: "/showcase/tax-scratchpad.jpg", description: "A local workspace for exploring hypothetical 2025 federal tax scenarios, comparing assumptions, and tracing the calculations.", author: "Nicholas Pulido · NPUX", post: "https://x.com/NickP_UX/status/2097890666198249625" },
   { name: "Noord", url: "https://noord.dev/", domain: "noord.dev", image: "/showcase/noord.jpg", description: "An applied design lab working on interfaces and visual learning. Home to Vlak.", author: "Noord" },
   { name: "Personal Site", url: "https://www.renatovaldes.com/", domain: "renatovaldes.com", image: "/showcase/renn-20260911.jpg", description: "A personal website bringing together work, books, and essays.", author: "Renn" },
@@ -35,7 +36,7 @@ export default function ShowcasePage() {
 
       <h2 className="section-label">Add the badge</h2>
       <p className="rs-t-body">The badge is optional. It links back to the system and gives other builders a direct trail to the source.</p>
-      <p><a href="https://vlak.dev"><img src="/badges/built-with-vlak.svg?v=2" alt="Built with Vlak" width="132" height="24" /></a></p>
+      <p><a className={styles.badgeLink} href="https://vlak.dev"><img src="/badges/built-with-vlak.svg?v=3" alt="Built with Vlak" width="124" height="32" /></a></p>
       <CodeBlock code={badge} />
 
       <h2 className="section-label">See the system in use</h2>

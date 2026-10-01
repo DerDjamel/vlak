@@ -35,7 +35,7 @@ const destinations = [
     entry(`/workflows/${kit.id}/`, kit.title, kit.description, "Workflow kits", [kit.id, "Example"]),
     entry(`/workflows/${kit.id}/manifest/`, `${kit.title} manifest`, `States, adapters, ownership, installation and acceptance for the ${kit.title.toLowerCase()} workflow.`, "Workflow kits", [kit.id, "Manifest", "Contract"]),
   ]),
-  entry("/showcase/", "Built with Vlak", "Products and experiments built with Vlak, with a public path for submitting your own work.", "Site", ["Showcase", "Community", "Badge", "Submit project", "Tax Scratchpad", "Nicholas Pulido", "NPUX", "Noord", "Personal Site", "Renn", "renatovaldes.com"]),
+  entry("/showcase/", "Built with Vlak", "Products and experiments built with Vlak, with a public path for submitting your own work.", "Site", ["Showcase", "Community", "Badge", "Submit project", "Staatskaart", "staatskaart.nl", "Dutch government", "Noord Labs", "Tax Scratchpad", "Nicholas Pulido", "NPUX", "Noord", "Personal Site", "Renn", "renatovaldes.com"]),
   entry("/ai/widgets/", "Widget patterns", "Compose application content, third-party React widgets, and embedded provider pages.", "Guides", ["Integrations", "Iframe", "Widget design system"]),
   entry("/use-cases/", "Use cases", "Components and studies for enterprise, consumer, agent, data, science, healthcare, and industrial software.", "Site"),
   entry("/", "Vlak", "A minimal React design system with monochrome surfaces, accessible controls, and CSS tokens.", "Site", ["Home", "Design system"]),
